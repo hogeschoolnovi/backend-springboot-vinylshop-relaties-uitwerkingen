@@ -6,6 +6,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ArtistEntityMapper implements EntityMapper<ArtistModel, ArtistEntity> {
+
+    private final AlbumEntityMapper albumEntityMapper;
+
+    public ArtistEntityMapper(AlbumEntityMapper albumEntityMapper) {
+        this.albumEntityMapper = albumEntityMapper;
+    }
+
     @Override
     public ArtistModel fromEntity(ArtistEntity entity) {
         if (entity == null) {
@@ -15,6 +22,12 @@ public class ArtistEntityMapper implements EntityMapper<ArtistModel, ArtistEntit
         fromEntityBase(entity,model);
         model.setName(entity.getName());
         model.setBiography(entity.getBiography());
+//        TODO: check of dit geen recursie veroorzaakt
+        if (entity.getAlbums() != null) {
+            model.setAlbums(entity.getAlbums().stream().map(
+                    albumEntityMapper::fromEntity
+            ).toList());
+        }
         return model;
     }
 
