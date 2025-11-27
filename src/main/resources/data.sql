@@ -6,4 +6,38 @@ values (now(), now(), 'www.bmg.com', 'This is a great service both for recording
 -- Insert into genres
 insert into genres (created_date, edited_date, name, description)
 values (now(), now(), 'Soul', 'It is good for your soul'),
-       (now(), now(), 'Jazz', 'Jazz hands and careless whispers');
+       (now(), now(), 'Jazz', 'Jazz hands and careless whispers'),
+       (now(), now(), 'House', 'Hakkuh!');
+
+
+-- Insert into Albums met dynamische genre_id en publisher_id
+insert into Albums (created_date, edited_date, genre_id, publisher_id, title, release_year)
+values (
+           now(),
+           now(),
+           (select id from genres where name = 'Jazz'),
+           (select id from publishers where name = 'BMG'),
+           'Rock album',
+           2021
+       );
+
+-- Insert into Albums met statische genre_id en publisher_id
+insert into Albums (created_date, edited_date, genre_id, publisher_id, title, release_year)
+values ( now(), now(), 1, 1, 'The best of', 1986),
+       (now(), now(), null, 2, 'Hakkuhbar', 1979);
+
+-- Insert into artists
+insert into artists (created_date, edited_date, biography, name)
+values (now(), now(), 'just started', 'nerdyJava');
+
+insert into stock (created_date, edited_date, condition, price, album_id)
+values (now(), now(), 'good', 19.95, 1);
+
+insert into album_artists (album_id, artist_id)
+values (3, 1);
+
+UPDATE Albums
+SET genre_id = (
+    SELECT id FROM genres WHERE name = 'House'
+)
+WHERE title = 'Hakkuhbar';

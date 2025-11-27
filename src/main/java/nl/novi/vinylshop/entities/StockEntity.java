@@ -3,7 +3,7 @@ package nl.novi.vinylshop.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "stock")
+@Table(name = "stock") //"stock" is meervoud
 public class StockEntity extends BaseEntity {
     private String condition;
     private double price;
