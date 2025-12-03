@@ -2,42 +2,40 @@ package nl.novi.vinylshop.services;
 
 
 import jakarta.persistence.EntityNotFoundException;
+import nl.novi.vinylshop.dtos.stock.StockRequestDTO;
+import nl.novi.vinylshop.dtos.stock.StockResponseDTO;
 import nl.novi.vinylshop.entities.AlbumEntity;
 import nl.novi.vinylshop.entities.StockEntity;
-import nl.novi.vinylshop.mappers.entity.StockEntityMapper;
-import nl.novi.vinylshop.models.StockModel;
+import nl.novi.vinylshop.mappers.StockDTOMapper;
 import nl.novi.vinylshop.repositories.StockRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class StockService {
 
     private final StockRepository stockRepository;
-    private final StockEntityMapper stockEntityMapper;
+    private final StockDTOMapper stockDTOMapper;
 
     public StockService(StockRepository stockRepository,
-                        StockEntityMapper stockEntityMapper) {
+                        StockDTOMapper stockDTOMapper) {
         this.stockRepository = stockRepository;
-        this.stockEntityMapper = stockEntityMapper;
+        this.stockDTOMapper = stockDTOMapper;
     }
 
     @Transactional(readOnly = true)
-    public List<StockModel> findAllStocks() {
-        return stockRepository.findAll().stream()
-                .map(stockEntityMapper::fromEntity)
-                .collect(Collectors.toList());
+    public List<StockResponseDTO> findAllStocks() {
+        return stockDTOMapper.mapToDto(stockRepository.findAll());
     }
 
     @Transactional(readOnly = true)
-    public StockModel findStockById(Long id) {
+    public StockResponseDTO findStockById(Long id) {
         StockEntity stockEntity = stockRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Stock " + id + " not found"));
-        return stockEntityMapper.fromEntity(stockEntity);
+        return stockDTOMapper.mapToDto(stockEntity);
     }
 
     @Transactional
@@ -47,20 +45,20 @@ public class StockService {
 
     @Transactional
     //nodig om fouten te voorkomen mocht door cascading meerdere entiteiten opgeslagen worden samen met deze entiteit.
-    public StockModel createStock(Long albumId, StockModel stockModel) {
-        StockEntity stockEntity = stockEntityMapper.toEntity(stockModel);
+    public StockResponseDTO createStock(Long albumId, StockRequestDTO stockModel) {
+        StockEntity stockEntity = stockDTOMapper.mapToEntity(stockModel);
         stockEntity.setAlbum(new AlbumEntity(albumId));
         stockEntity = stockRepository.save(stockEntity);
-        return stockEntityMapper.fromEntity(stockEntity);
+        return stockDTOMapper.mapToDto(stockEntity);
     }
 
     @Transactional
-    public StockModel updateStock(Long albumId, Long id, StockModel stockModel) {
+    public StockResponseDTO updateStock(Long albumId, Long id, StockRequestDTO stockModel) {
         StockEntity stockEntity = getStockEntity(albumId, id);
         stockEntity.setCondition(stockModel.getCondition());
         stockEntity.setPrice(stockModel.getPrice());
         stockEntity = stockRepository.save(stockEntity);
-        return stockEntityMapper.fromEntity(stockEntity);
+        return stockDTOMapper.mapToDto(stockEntity);
     }
 
     private StockEntity getStockEntity(Long albumId, Long id) {
@@ -70,19 +68,19 @@ public class StockService {
     }
 
     @Transactional
-    public StockModel findStock(Long albumId, Long id) {
+    public StockResponseDTO findStock(Long albumId, Long id) {
         StockEntity stockEntity = getByIdAndAlbumId(albumId, id)
                 .orElseThrow(() -> new EntityNotFoundException("Stock " + id + " not found in album " + albumId));
-        return stockEntityMapper.fromEntity(stockEntity);
+        return stockDTOMapper.mapToDto(stockEntity);
     }
 
     private Optional<StockEntity> getByIdAndAlbumId(Long albumId, Long id) {
         return stockRepository.findByIdAndAlbumId(id, albumId);
     }
 
-    public List<StockModel> findStock(Long albumId) {
+    public List<StockResponseDTO> findStock(Long albumId) {
         var stocks = stockRepository.findByAlbumId(albumId);
-        return stockEntityMapper.fromEntities(stocks);
+        return stockDTOMapper.mapToDto(stocks);
     }
 }
 

@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>nl.novi</groupId>
-    <artifactId>Vinylshop-3-uitwerkingen</artifactId>
+    <artifactId>vinylshop</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Vinylshop-3-uitwerkingen</name>
-    <description>Vinylshop-3-uitwerkingen</description>
+    <name>Vinylshop-4-uitwerkingen</name>
+    <description>Vinylshop-4-uitwerkingen</description>
     <url/>
     <licenses>
         <license/>

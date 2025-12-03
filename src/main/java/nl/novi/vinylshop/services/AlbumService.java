@@ -2,12 +2,12 @@ package nl.novi.vinylshop.services;
 
 
 import jakarta.persistence.EntityNotFoundException;
-import nl.novi.vinylshop.entities.AlbumEntity;
-import nl.novi.vinylshop.entities.ArtistEntity;
-import nl.novi.vinylshop.entities.GenreEntity;
-import nl.novi.vinylshop.entities.PublisherEntity;
-import nl.novi.vinylshop.mappers.entity.AlbumEntityMapper;
-import nl.novi.vinylshop.models.AlbumModel;
+import nl.novi.vinylshop.dtos.album.AlbumExtendedResponseDTO;
+import nl.novi.vinylshop.dtos.album.AlbumRequestDTO;
+import nl.novi.vinylshop.dtos.album.AlbumResponseDTO;
+import nl.novi.vinylshop.entities.*;
+import nl.novi.vinylshop.mappers.AlbumDTOMapper;
+import nl.novi.vinylshop.mappers.AlbumExtendedDTOMapper;
 import nl.novi.vinylshop.repositories.AlbumRepository;
 import nl.novi.vinylshop.repositories.ArtistRepository;
 import nl.novi.vinylshop.repositories.GenreRepository;
@@ -23,52 +23,64 @@ public class AlbumService {
 
     private final AlbumRepository albumRepository;
     private final ArtistRepository artistRepository;
-    private final AlbumEntityMapper albumEntityMapper;
+    private final AlbumDTOMapper albumDTOMapper;
+    private final AlbumExtendedDTOMapper albumExtendedDTOMapper;
     private final PublisherRepository publisherRepository;
     private final GenreRepository genreRepository;
 
     public AlbumService(AlbumRepository albumRepository,
                         ArtistRepository artistRepository,
-                        AlbumEntityMapper albumEntityMapper,
+                        AlbumDTOMapper albumDTOMapper, AlbumExtendedDTOMapper albumExtendedDTOMapper,
                         PublisherRepository publisherRepository,
                         GenreRepository genreRepository) {
         this.albumRepository = albumRepository;
         this.artistRepository = artistRepository;
-        this.albumEntityMapper = albumEntityMapper;
+        this.albumDTOMapper = albumDTOMapper;
+        this.albumExtendedDTOMapper = albumExtendedDTOMapper;
         this.publisherRepository = publisherRepository;
         this.genreRepository = genreRepository;
     }
 
     @Transactional(readOnly = true)
-    public List<AlbumModel> findAllAlbums() {
-        return albumRepository.findAll().stream()
-                .map(albumEntityMapper::fromEntity)
-                .collect(Collectors.toList());
+    public List<AlbumResponseDTO> findAllAlbums() {
+        return albumDTOMapper.mapToDto(albumRepository.findAll());
     }
 
     @Transactional(readOnly = true)
-    public AlbumModel findAlbumById(Long id) throws EntityNotFoundException {
+    public AlbumExtendedResponseDTO findAlbumById(Long id) throws EntityNotFoundException {
         AlbumEntity albumEntity = getAlbumEntity(id);
-        return albumEntityMapper.fromEntity(albumEntity);
+        return albumExtendedDTOMapper.mapToDto(albumEntity);
     }
 
     @Transactional
-    public AlbumModel createAlbum(AlbumModel albumModel) {
-        AlbumEntity albumEntity = albumEntityMapper.toEntity(albumModel);
+    public AlbumResponseDTO createAlbum(AlbumRequestDTO albumModel) {
+        AlbumEntity albumEntity = albumDTOMapper.mapToEntity(albumModel);
+        if (albumModel.getGenreId() != null) {
+            albumEntity.setGenre(getGenreEntity(albumModel.getGenreId()));
+        } else {
+            albumEntity.setGenre(new GenreEntity());
+        }
+
+        if(albumModel.getPublisherId() != null){
+            albumEntity.setPublisher(getPublisherEntity(albumModel.getPublisherId()));
+        } else {
+            albumEntity.setPublisher(new PublisherEntity());
+        }
+
         albumEntity = albumRepository.save(albumEntity);
-        return albumEntityMapper.fromEntity(albumEntity);
+        return albumDTOMapper.mapToDto(albumEntity);
     }
 
     @Transactional
-    public AlbumModel updateAlbum(Long id, AlbumModel albumModel) throws EntityNotFoundException {
+    public AlbumResponseDTO updateAlbum(Long id, AlbumRequestDTO albumModel) throws EntityNotFoundException {
         AlbumEntity existingAlbumEntity = getAlbumEntity(id);
 
         existingAlbumEntity.setTitle(albumModel.getTitle());
-        existingAlbumEntity.setReleaseYear(albumModel.getReleaseYear());
-        existingAlbumEntity.setPublisher(getPublisherEntity(albumModel.getPublisher().getId()));
-        existingAlbumEntity.setGenre(getGenreEntity(albumModel.getGenre().getId()));
+        existingAlbumEntity.setReleaseYear(albumModel.getPublishedYear());
+        existingAlbumEntity.setPublisher(getPublisherEntity(albumModel.getPublisherId()));
+        existingAlbumEntity.setGenre(getGenreEntity(albumModel.getGenreId()));
         existingAlbumEntity = albumRepository.save(existingAlbumEntity);
-        return albumEntityMapper.fromEntity(existingAlbumEntity);
+        return albumDTOMapper.mapToDto(existingAlbumEntity);
     }
 
     private PublisherEntity getPublisherEntity(long publisherId) {
@@ -87,7 +99,11 @@ public class AlbumService {
 
     @Transactional
     public void deleteAlbum(Long id) {
-        albumRepository.deleteById(id);
+        AlbumEntity album = getAlbumEntity(id);
+//        Verwijder geen albums als je daar nog voorraad van hebt
+        if(album.getStockItems().isEmpty()) {
+            albumRepository.deleteById(id);
+        }
     }
 
     @Transactional
@@ -111,10 +127,8 @@ public class AlbumService {
     }
 
     @Transactional(readOnly = true)
-    public List<AlbumModel> getAlbumsWithStock() {
-        return albumRepository.findAlbumsWithStock().stream()
-                .map(albumEntityMapper::fromEntity)
-                .collect(Collectors.toList());
+    public List<AlbumResponseDTO> getAlbumsWithStock() {
+        return albumDTOMapper.mapToDto(albumRepository.findAlbumsWithStock());
     }
 }
 

@@ -1,17 +1,18 @@
-package nl.novi.vinylshop.mappers.dto;
+package nl.novi.vinylshop.mappers;
 
 import nl.novi.vinylshop.dtos.genre.GenreRequestDTO;
 import nl.novi.vinylshop.dtos.genre.GenreResponseDTO;
-import nl.novi.vinylshop.models.GenreModel;
+import nl.novi.vinylshop.entities.GenreEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class GenreDTOMapper {
+public class GenreDTOMapper implements DTOMapper<GenreResponseDTO, GenreRequestDTO, GenreEntity> {
 
-    public GenreResponseDTO mapToDto(GenreModel model) {
+    @Override
+    public GenreResponseDTO mapToDto(GenreEntity model) {
 
         var result = new GenreResponseDTO();
         result.setId(model.getId());
@@ -21,17 +22,19 @@ public class GenreDTOMapper {
     }
 
 
-    public List<GenreResponseDTO> mapToDto(List<GenreModel> models) {
+    @Override
+    public List<GenreResponseDTO> mapToDto(List<GenreEntity> models) {
         var result = new ArrayList<GenreResponseDTO>();
-        for (GenreModel model : models) {
+        for (GenreEntity model : models) {
             result.add(mapToDto(model));
         }
         return result;
     }
 
    
-    public GenreModel mapToModel(GenreRequestDTO genreModel) {
-        var result = new GenreModel();
+    @Override
+    public GenreEntity mapToEntity(GenreRequestDTO genreModel) {
+        var result = new GenreEntity();
         result.setName(genreModel.getName());
         result.setDescription(genreModel.getDescription());
         return result;

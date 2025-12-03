@@ -28,10 +28,15 @@ values ( now(), now(), 1, 1, 'The best of', 1986),
 
 -- Insert into artists
 insert into artists (created_date, edited_date, biography, name)
-values (now(), now(), 'just started', 'nerdyJava');
+values (now(), now(), 'The house band for Stax Records in Memphis, Tennessee', 'Booker T & the M.G.''s'),
+       (now(), now(), 'Probably the best known heavy metal band', 'Metallica'),
+       (now(), now(), 'The pioneers of electronic music', 'Kraftwerk');
 
 insert into stock (created_date, edited_date, condition, price, album_id)
-values (now(), now(), 'good', 19.95, 1);
+values (now(), now(), 'good', 19.95, 1),
+       (now(), now(), 'medium', 20.00, 1),
+       (now(), now(), 'good', 15.50, 1),
+       (now(), now(), 'poor', 5.95, 2);
 
 insert into album_artists (album_id, artist_id)
 values (3, 1);

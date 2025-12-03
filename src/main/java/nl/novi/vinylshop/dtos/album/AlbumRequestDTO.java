@@ -10,25 +10,25 @@ public class AlbumRequestDTO {
     @NotNull
     @Min(1877)
     @Max(2100)
-    private int publishedYear;
+    private Integer publishedYear;
     @NotNull
-    private long genreId;
-    private long publisherId;
+    private Long genreId;
+    private Long publisherId;
 
-    public long getPublisherId() {
-        return publisherId;
-    }
-
-    public void setPublisherId(long publisherId) {
-        this.publisherId = publisherId;
-    }
-
-    public long getGenreId() {
+    public Long getGenreId() {
         return genreId;
     }
 
-    public void setGenreId(long genreId) {
+    public void setGenreId(Long genreId) {
         this.genreId = genreId;
+    }
+
+    public Long getPublisherId() {
+        return publisherId;
+    }
+
+    public void setPublisherId(Long publisherId) {
+        this.publisherId = publisherId;
     }
 
     // Getters en setters
@@ -40,11 +40,11 @@ public class AlbumRequestDTO {
         this.title = title;
     }
 
-    public int getPublishedYear() {
+    public Integer getPublishedYear() {
         return publishedYear;
     }
 
-    public void setPublishedYear(int publishedYear) {
+    public void setPublishedYear(Integer publishedYear) {
         this.publishedYear = publishedYear;
     }
 }

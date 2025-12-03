@@ -1,8 +1,8 @@
-package nl.novi.vinylshop.mappers.dto;
+package nl.novi.vinylshop.mappers;
 
 import nl.novi.vinylshop.dtos.stock.StockRequestDTO;
 import nl.novi.vinylshop.dtos.stock.StockResponseDTO;
-import nl.novi.vinylshop.models.StockModel;
+import nl.novi.vinylshop.entities.StockEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class StockDTOMapper {
+public class StockDTOMapper implements DTOMapper<StockResponseDTO, StockRequestDTO, StockEntity>{
 
-    public StockResponseDTO mapToDto(StockModel model) {
+    @Override
+    public StockResponseDTO mapToDto(StockEntity model) {
         var result = new StockResponseDTO();
         result.setId(model.getId());
         result.setCondition(model.getCondition());
@@ -20,13 +21,16 @@ public class StockDTOMapper {
         return result;
     }
 
-    public List<StockResponseDTO> mapToDtos(List<StockModel> models) {
+
+    @Override
+    public List<StockResponseDTO> mapToDto(List<StockEntity> models) {
         if(models == null) { return new ArrayList<StockResponseDTO>();}
         return models.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public StockModel mapToModel(StockRequestDTO requestDTO) {
-        var model = new StockModel();
+    @Override
+    public StockEntity mapToEntity(StockRequestDTO requestDTO) {
+        var model = new StockEntity();
         model.setCondition(requestDTO.getCondition());
         model.setPrice(requestDTO.getPrice());
         return model;

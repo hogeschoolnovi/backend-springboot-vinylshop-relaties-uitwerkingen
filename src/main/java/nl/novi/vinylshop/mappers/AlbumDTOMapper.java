@@ -1,18 +1,16 @@
-package nl.novi.vinylshop.mappers.dto;
+package nl.novi.vinylshop.mappers;
 
 
 import nl.novi.vinylshop.dtos.album.AlbumRequestDTO;
 import nl.novi.vinylshop.dtos.album.AlbumResponseDTO;
-import nl.novi.vinylshop.models.AlbumModel;
-import nl.novi.vinylshop.models.GenreModel;
-import nl.novi.vinylshop.models.PublisherModel;
+import nl.novi.vinylshop.entities.AlbumEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class AlbumDTOMapper {
+public class AlbumDTOMapper implements DTOMapper<AlbumResponseDTO, AlbumRequestDTO, AlbumEntity> {
 
     private final PublisherDTOMapper publisherDtoMapper;
     private final GenreDTOMapper genreDTOMapper;
@@ -22,25 +20,34 @@ public class AlbumDTOMapper {
         this.genreDTOMapper = genreDTOMapper;
     }
 
-    public AlbumResponseDTO mapToDto(AlbumModel model) {
+    @Override
+    public AlbumResponseDTO mapToDto(AlbumEntity model) {
         return mapToDto(model, new AlbumResponseDTO());
     }
 
-    public <D extends AlbumResponseDTO> D mapToDto(AlbumModel model, D target) {
+    public <D extends AlbumResponseDTO> D mapToDto(AlbumEntity model, D target) {
         target.setId(model.getId());
         target.setTitle(model.getTitle());
         target.setPublishedYear(model.getReleaseYear());
-        target.setGenre(genreDTOMapper.mapToDto(model.getGenre()));
-        target.setPublisher(publisherDtoMapper.mapToDto(model.getPublisher()));
+        if(model.getGenre() != null){
+            target.setGenre(genreDTOMapper.mapToDto(model.getGenre()));
+        }
+        if(model.getPublisher() != null) {
+            target.setPublisher(publisherDtoMapper.mapToDto(model.getPublisher()));
+        }
+
         return target;
     }
 
-    public List<AlbumResponseDTO> mapToDtos(List<AlbumModel> models) {
+
+    @Override
+    public List<AlbumResponseDTO> mapToDto(List<AlbumEntity> models) {
         return models.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public AlbumModel mapToModel(AlbumRequestDTO requestDTO) {
-        var model = new AlbumModel();
+    @Override
+    public AlbumEntity mapToEntity(AlbumRequestDTO requestDTO) {
+        var model = new AlbumEntity();
         model.setTitle(requestDTO.getTitle());
         model.setReleaseYear(requestDTO.getPublishedYear());
 //        Deze twee voeg je in de service toe:

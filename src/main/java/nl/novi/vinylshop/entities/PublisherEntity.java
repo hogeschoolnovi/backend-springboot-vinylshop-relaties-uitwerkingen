@@ -1,9 +1,6 @@
 package nl.novi.vinylshop.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -14,7 +11,7 @@ public class PublisherEntity extends BaseEntity {
     private String name;
     private String address;
     private String contactDetails;
-    @OneToMany(mappedBy = "publisher")
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
     private List<AlbumEntity> albums;
 
     public String getName() {

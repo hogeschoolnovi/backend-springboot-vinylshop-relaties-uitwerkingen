@@ -1,17 +1,19 @@
-package nl.novi.vinylshop.mappers.dto;
+package nl.novi.vinylshop.mappers;
 
 
 import nl.novi.vinylshop.dtos.artist.ArtistRequestDTO;
 import nl.novi.vinylshop.dtos.artist.ArtistResponseDTO;
-import nl.novi.vinylshop.models.ArtistModel;
+import nl.novi.vinylshop.entities.ArtistEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class ArtistDTOMapper {
-    public ArtistResponseDTO mapToDto(ArtistModel model) {
+public class ArtistDTOMapper implements DTOMapper<ArtistResponseDTO, ArtistRequestDTO, ArtistEntity>{
+
+    @Override
+    public ArtistResponseDTO mapToDto(ArtistEntity model) {
         var result = new ArtistResponseDTO();
         result.setId(model.getId());
         result.setName(model.getName());
@@ -19,12 +21,14 @@ public class ArtistDTOMapper {
         return result;
     }
 
-    public List<ArtistResponseDTO> mapToDto(List<ArtistModel> models) {
+    @Override
+    public List<ArtistResponseDTO> mapToDto(List<ArtistEntity> models) {
         return models.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public ArtistModel mapToModel(ArtistRequestDTO requestDTO) {
-        var model = new ArtistModel();
+    @Override
+    public ArtistEntity mapToEntity(ArtistRequestDTO requestDTO) {
+        var model = new ArtistEntity();
         model.setName(requestDTO.getName());
         model.setBiography(requestDTO.getBiography());
         return model;

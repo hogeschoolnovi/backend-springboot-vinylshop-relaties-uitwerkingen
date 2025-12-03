@@ -1,17 +1,18 @@
-package nl.novi.vinylshop.mappers.dto;
+package nl.novi.vinylshop.mappers;
 
 import nl.novi.vinylshop.dtos.publisher.PublisherRequestDTO;
 import nl.novi.vinylshop.dtos.publisher.PublisherResponseDTO;
-import nl.novi.vinylshop.models.PublisherModel;
+import nl.novi.vinylshop.entities.PublisherEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class PublisherDTOMapper {
+public class PublisherDTOMapper implements DTOMapper<PublisherResponseDTO, PublisherRequestDTO, PublisherEntity>{
 
-    public PublisherResponseDTO mapToDto(PublisherModel publisher) {
+    @Override
+    public PublisherResponseDTO mapToDto(PublisherEntity publisher) {
         PublisherResponseDTO dto = new PublisherResponseDTO();
         dto.setId(publisher.getId());
         dto.setName(publisher.getName());
@@ -20,16 +21,18 @@ public class PublisherDTOMapper {
         return dto;
     }
 
-    public List<PublisherResponseDTO> mapToDto(List<PublisherModel> publishers) {
+    @Override
+    public List<PublisherResponseDTO> mapToDto(List<PublisherEntity> publishers) {
         List<PublisherResponseDTO> result = new ArrayList<>();
-        for (PublisherModel publisher : publishers) {
+        for (PublisherEntity publisher : publishers) {
             result.add(mapToDto(publisher));
         }
         return result;
     }
 
-    public PublisherModel mapToModel(PublisherRequestDTO dto) {
-        PublisherModel publisher = new PublisherModel();
+    @Override
+    public PublisherEntity mapToEntity(PublisherRequestDTO dto) {
+        PublisherEntity publisher = new PublisherEntity();
         publisher.setName(dto.getName());
         publisher.setAddress(dto.getAddress());
         publisher.setContactDetails(dto.getContactDetails());

@@ -14,5 +14,7 @@ public interface AlbumRepository extends JpaRepository<AlbumEntity, Long> {
 
     @Query("SELECT DISTINCT a FROM AlbumEntity a JOIN FETCH a.stockItems WHERE a.stockItems IS NOT EMPTY")
     List<AlbumEntity> findAlbumsWithStock();
+    List<AlbumEntity> findByGenre_Id(Long genreId);
 }
+
 

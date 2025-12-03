@@ -5,10 +5,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import nl.novi.vinylshop.dtos.genre.GenreRequestDTO;
 import nl.novi.vinylshop.dtos.genre.GenreResponseDTO;
-import nl.novi.vinylshop.entities.GenreEntity;
 import nl.novi.vinylshop.helpers.UrlHelper;
-import nl.novi.vinylshop.mappers.dto.GenreDTOMapper;
-import nl.novi.vinylshop.models.GenreModel;
+import nl.novi.vinylshop.mappers.GenreDTOMapper;
 import nl.novi.vinylshop.services.GenreService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,41 +26,37 @@ import java.util.List;
 public class GenreController {
 
     private final GenreService genreService;
-    private final GenreDTOMapper genreDTOMapper;
     private final UrlHelper urlHelper;
 
 
-    public GenreController(GenreService genreService, GenreDTOMapper genreDTOMapper, UrlHelper urlHelper) {
+    public GenreController(GenreService genreService, UrlHelper urlHelper) {
         this.genreService = genreService;
-        this.genreDTOMapper = genreDTOMapper;
         this.urlHelper = urlHelper;
 
     }
 
     @GetMapping
     public ResponseEntity<List<GenreResponseDTO>> getAllGenres() {
-        List<GenreModel> genres = genreService.findAllGenres();
-        return new ResponseEntity<>(genreDTOMapper.mapToDto(genres), HttpStatus.OK);
+        List<GenreResponseDTO> genres = genreService.findAllGenres();
+        return new ResponseEntity<>(genres, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GenreResponseDTO> getGenreById(@PathVariable Long id) throws EntityNotFoundException {
-        GenreModel genre = genreService.findGenreById(id);
-        return new ResponseEntity<>(genreDTOMapper.mapToDto(genre), HttpStatus.OK);
+        GenreResponseDTO genre = genreService.findGenreById(id);
+        return new ResponseEntity<>(genre, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<GenreResponseDTO> createGenre(@RequestBody @Valid GenreRequestDTO genreModel) {
-        GenreModel newGenre = genreService.createGenre(genreDTOMapper.mapToModel(genreModel));
-        GenreResponseDTO genreResponseDTO = genreDTOMapper.mapToDto(newGenre);
-        return ResponseEntity.created(urlHelper.getCurrentUrlWithId(genreResponseDTO.getId())).body(genreResponseDTO);
+        GenreResponseDTO newGenre = genreService.createGenre(genreModel);
+        return ResponseEntity.created(urlHelper.getCurrentUrlWithId(newGenre.getId())).body(newGenre);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<GenreResponseDTO> updateGenre(@PathVariable Long id, @RequestBody @Valid GenreRequestDTO genreModel) throws EntityNotFoundException {
-        GenreModel updatedGenre = genreService.updateGenre(id, genreDTOMapper.mapToModel(genreModel));
-        GenreResponseDTO genreResponseDTO = genreDTOMapper.mapToDto(updatedGenre);
-        return new ResponseEntity<>(genreResponseDTO, HttpStatus.OK);
+        GenreResponseDTO updatedGenre = genreService.updateGenre(id, genreModel);;
+        return new ResponseEntity<>(updatedGenre, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

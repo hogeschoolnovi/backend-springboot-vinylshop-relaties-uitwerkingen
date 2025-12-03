@@ -11,15 +11,15 @@ import java.util.Set;
 public class AlbumEntity extends BaseEntity {
     private String title;
     private int releaseYear;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "publisher_id")
     private PublisherEntity publisher;
 
-    @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "album")
     private List<StockEntity> stockItems;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(
             name = "album_artists",
             joinColumns = @JoinColumn(name = "album_id"),
@@ -27,7 +27,7 @@ public class AlbumEntity extends BaseEntity {
     )
     private Set<ArtistEntity> artists = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne( cascade = CascadeType.ALL)
     @JoinColumn(name = "genre_id")
     private GenreEntity genre;
 
