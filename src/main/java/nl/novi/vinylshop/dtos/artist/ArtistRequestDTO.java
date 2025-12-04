@@ -1,6 +1,7 @@
 package nl.novi.vinylshop.dtos.artist;
 
 public class ArtistRequestDTO {
+    @Notnull
     private String name;
     private String biography;
 

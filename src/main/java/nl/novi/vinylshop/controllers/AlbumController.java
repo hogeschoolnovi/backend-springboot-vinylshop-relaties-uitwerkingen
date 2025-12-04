@@ -44,7 +44,6 @@ public class AlbumController {
         return new ResponseEntity<>(album, HttpStatus.OK);
     }
 
-//    FIXME: genre en publisher worden niet gekoppeld
     @PostMapping
     public ResponseEntity<AlbumResponseDTO> createAlbum(@RequestBody AlbumRequestDTO albumRequestDTO) {;
         AlbumResponseDTO albumDTO = albumService.createAlbum(albumRequestDTO);

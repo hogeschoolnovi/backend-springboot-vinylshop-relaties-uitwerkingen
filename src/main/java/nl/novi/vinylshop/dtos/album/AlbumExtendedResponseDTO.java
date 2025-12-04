@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlbumExtendedResponseDTO extends AlbumResponseDTO  {
+    private List<StockResponseDTO> stock = new ArrayList<>();
+
     public List<StockResponseDTO> getStock() {
         return stock;
     }
@@ -15,5 +17,5 @@ public class AlbumExtendedResponseDTO extends AlbumResponseDTO  {
         this.stock = stock;
     }
 
-    private List<StockResponseDTO> stock = new ArrayList<>();
+
 }

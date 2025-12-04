@@ -1,8 +1,13 @@
 package nl.novi.vinylshop.dtos.stock;
 
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class StockRequestDTO {
     private String condition;
+    @NotNull
+    @Positive
     private double price;
 
     public String getCondition() {

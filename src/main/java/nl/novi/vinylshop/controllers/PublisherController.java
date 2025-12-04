@@ -59,7 +59,6 @@ public class PublisherController {
         return new ResponseEntity<>(updatedPublisher, HttpStatus.OK);
     }
 
-    //    FIXME: violates foreign key constraint on albums
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePublisher(@PathVariable Long id) {
         publisherService.deletePublisher(id);

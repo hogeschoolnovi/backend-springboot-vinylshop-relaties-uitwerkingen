@@ -52,7 +52,6 @@ public class ArtistController {
         return new ResponseEntity<>(artistDto, HttpStatus.OK);
     }
 
-//    FIXME: foreign key violation on album_artists
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArtist(@PathVariable Long id) {
         artistService.deleteArtist(id);
