@@ -127,8 +127,12 @@ public class AlbumService {
     }
 
     @Transactional(readOnly = true)
-    public List<AlbumResponseDTO> getAlbumsWithStock() {
-        return albumDTOMapper.mapToDto(albumRepository.findAlbumsWithStock());
+    public List<AlbumResponseDTO> getAlbumsWithStock(Boolean stock) {
+        if(stock) {
+            return albumDTOMapper.mapToDto(albumRepository.findByStockItemsNotEmpty());
+        } else {
+            return albumDTOMapper.mapToDto(albumRepository.findByStockItemsEmpty());
+        }
     }
 }
 

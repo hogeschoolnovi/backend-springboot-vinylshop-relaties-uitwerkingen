@@ -1,7 +1,9 @@
 package nl.novi.vinylshop.dtos.artist;
 
+import jakarta.validation.constraints.NotNull;
+
 public class ArtistRequestDTO {
-    @Notnull
+    @NotNull
     private String name;
     private String biography;
 

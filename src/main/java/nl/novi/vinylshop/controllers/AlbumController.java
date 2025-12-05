@@ -33,8 +33,13 @@ public class AlbumController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AlbumResponseDTO>> getAllAlbums() {
-        List<AlbumResponseDTO> albums = albumService.findAllAlbums();
+    public ResponseEntity<List<AlbumResponseDTO>> getAllAlbums(@RequestParam(required = false) Boolean stock) {
+        List<AlbumResponseDTO> albums;
+        if(stock == null) {
+            albums = albumService.findAllAlbums();
+        } else {
+            albums = albumService.getAlbumsWithStock(stock);
+        }
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 
