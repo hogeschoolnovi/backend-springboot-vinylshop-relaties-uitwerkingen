@@ -18,7 +18,6 @@ import java.util.List;
 public class ArtistController {
 
     private final ArtistService artistService;
-    private final ArtistDTOMapper artistDTOMapper;
     private final UrlHelper urlHelper;
 
     public ArtistController(ArtistService artistService, ArtistDTOMapper artistDTOMapper, UrlHelper urlHelper ) {

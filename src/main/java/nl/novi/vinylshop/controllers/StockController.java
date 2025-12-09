@@ -17,7 +17,6 @@ import java.util.List;
 public class StockController {
 
     private final StockService stockService;
-    private final StockDTOMapper stockMapper;
     private final UrlHelper urlHelper;
 
 
