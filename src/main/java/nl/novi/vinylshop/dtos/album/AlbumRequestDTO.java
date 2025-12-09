@@ -10,7 +10,7 @@ public class AlbumRequestDTO {
     @NotNull
     @Min(1877)
     @Max(2100)
-    private Integer publishedYear;
+    private Integer releaseYear;
     @NotNull
     private Long genreId;
     private Long publisherId;
@@ -40,12 +40,12 @@ public class AlbumRequestDTO {
         this.title = title;
     }
 
-    public Integer getPublishedYear() {
-        return publishedYear;
+    public Integer getReleaseYear() {
+        return releaseYear;
     }
 
-    public void setPublishedYear(Integer publishedYear) {
-        this.publishedYear = publishedYear;
+    public void setReleaseYear(Integer releaseYear) {
+        this.releaseYear = releaseYear;
     }
 }
 

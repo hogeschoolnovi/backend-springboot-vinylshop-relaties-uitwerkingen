@@ -28,7 +28,7 @@ public class AlbumDTOMapper implements DTOMapper<AlbumResponseDTO, AlbumRequestD
     public <D extends AlbumResponseDTO> D mapToDto(AlbumEntity model, D target) {
         target.setId(model.getId());
         target.setTitle(model.getTitle());
-        target.setPublishedYear(model.getReleaseYear());
+        target.setReleaseYear(model.getReleaseYear());
         if(model.getGenre() != null){
             target.setGenre(genreDTOMapper.mapToDto(model.getGenre()));
         }
@@ -49,7 +49,7 @@ public class AlbumDTOMapper implements DTOMapper<AlbumResponseDTO, AlbumRequestD
     public AlbumEntity mapToEntity(AlbumRequestDTO requestDTO) {
         var model = new AlbumEntity();
         model.setTitle(requestDTO.getTitle());
-        model.setReleaseYear(requestDTO.getPublishedYear());
+        model.setReleaseYear(requestDTO.getReleaseYear());
 //        Deze twee voeg je in de service toe:
 //        model.setGenre(new GenreModel());
 //        model.setPublisher(new PublisherModel());

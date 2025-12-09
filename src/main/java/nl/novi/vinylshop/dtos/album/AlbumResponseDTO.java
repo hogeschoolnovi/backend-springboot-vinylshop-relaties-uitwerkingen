@@ -7,7 +7,7 @@ import nl.novi.vinylshop.dtos.publisher.PublisherResponseDTO;
 public class AlbumResponseDTO {
     private Long id;
     private String title;
-    private int publishedYear;
+    private int releaseYear;
     private GenreResponseDTO genre;
     private PublisherResponseDTO publisher;
 
@@ -43,11 +43,11 @@ public class AlbumResponseDTO {
         this.title = title;
     }
 
-    public int getPublishedYear() {
-        return publishedYear;
+    public int getReleaseYear() {
+        return releaseYear;
     }
 
-    public void setPublishedYear(int publishedYear) {
-        this.publishedYear = publishedYear;
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
     }
 }

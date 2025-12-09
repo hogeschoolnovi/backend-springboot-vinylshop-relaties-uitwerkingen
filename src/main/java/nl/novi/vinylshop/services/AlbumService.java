@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AlbumService {
@@ -76,7 +75,7 @@ public class AlbumService {
         AlbumEntity existingAlbumEntity = getAlbumEntity(id);
 
         existingAlbumEntity.setTitle(albumModel.getTitle());
-        existingAlbumEntity.setReleaseYear(albumModel.getPublishedYear());
+        existingAlbumEntity.setReleaseYear(albumModel.getReleaseYear());
         existingAlbumEntity.setPublisher(getPublisherEntity(albumModel.getPublisherId()));
         existingAlbumEntity.setGenre(getGenreEntity(albumModel.getGenreId()));
         existingAlbumEntity = albumRepository.save(existingAlbumEntity);

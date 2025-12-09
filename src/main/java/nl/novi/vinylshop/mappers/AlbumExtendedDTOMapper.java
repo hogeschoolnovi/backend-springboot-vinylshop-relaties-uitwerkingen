@@ -16,8 +16,9 @@ public class AlbumExtendedDTOMapper extends AlbumDTOMapper {
         this.stockDTOMapper = stockDTOMapper;
     }
 
+    @Override
     public AlbumExtendedResponseDTO mapToDto(AlbumEntity model) {
-        AlbumExtendedResponseDTO result = super.mapToDto(model, new AlbumExtendedResponseDTO());
+        AlbumExtendedResponseDTO result = (AlbumExtendedResponseDTO) super.mapToDto(model);
         result.setStock(stockDTOMapper.mapToDto(model.getStockItems()));
         return result;
     }
