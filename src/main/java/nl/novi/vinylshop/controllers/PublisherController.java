@@ -28,9 +28,8 @@ public class PublisherController {
     private final PublisherService publisherService;
     private final UrlHelper urlHelper;
 
-    public PublisherController(PublisherService publisherService, PublisherDTOMapper publisherDTOMapper, UrlHelper urlHelper) {
+    public PublisherController(PublisherService publisherService, UrlHelper urlHelper) {
         this.publisherService = publisherService;
-        this.publisherDTOMapper = publisherDTOMapper;
         this.urlHelper = urlHelper;
 
     }

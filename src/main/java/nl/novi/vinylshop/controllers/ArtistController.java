@@ -20,9 +20,8 @@ public class ArtistController {
     private final ArtistService artistService;
     private final UrlHelper urlHelper;
 
-    public ArtistController(ArtistService artistService, ArtistDTOMapper artistDTOMapper, UrlHelper urlHelper ) {
+    public ArtistController(ArtistService artistService, UrlHelper urlHelper ) {
         this.artistService = artistService;
-        this.artistDTOMapper = artistDTOMapper;
         this.urlHelper = urlHelper;
     }
 

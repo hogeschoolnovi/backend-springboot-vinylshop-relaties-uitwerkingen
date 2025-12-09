@@ -20,9 +20,8 @@ public class StockController {
     private final UrlHelper urlHelper;
 
 
-    public StockController(StockService stockService, StockDTOMapper stockMapper,UrlHelper urlHelper) {
+    public StockController(StockService stockService, UrlHelper urlHelper) {
         this.stockService = stockService;
-        this.stockMapper = stockMapper;
         this.urlHelper = urlHelper;
     }
 
