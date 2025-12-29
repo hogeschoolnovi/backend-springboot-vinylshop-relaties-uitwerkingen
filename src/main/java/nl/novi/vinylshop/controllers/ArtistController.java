@@ -1,6 +1,5 @@
 package nl.novi.vinylshop.controllers;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import nl.novi.vinylshop.dtos.artist.ArtistRequestDTO;
 import nl.novi.vinylshop.dtos.artist.ArtistResponseDTO;
@@ -32,7 +31,7 @@ public class ArtistController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArtistResponseDTO> getArtistById(@PathVariable Long id) throws EntityNotFoundException {
+    public ResponseEntity<ArtistResponseDTO> getArtistById(@PathVariable Long id) {
         ArtistResponseDTO artistDTO = artistService.findArtistById(id);
         return new ResponseEntity<>(artistDTO, HttpStatus.OK);
 
@@ -45,7 +44,7 @@ public class ArtistController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ArtistResponseDTO> updateArtist(@PathVariable Long id, @RequestBody @Valid ArtistRequestDTO artistRequestDTO) throws EntityNotFoundException {
+    public ResponseEntity<ArtistResponseDTO> updateArtist(@PathVariable Long id, @RequestBody @Valid ArtistRequestDTO artistRequestDTO) {
         ArtistResponseDTO artistDto = artistService.updateArtist(id, artistRequestDTO);
         return new ResponseEntity<>(artistDto, HttpStatus.OK);
     }

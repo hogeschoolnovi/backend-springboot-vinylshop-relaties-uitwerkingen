@@ -1,7 +1,6 @@
 package nl.novi.vinylshop.controllers;
 
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import nl.novi.vinylshop.dtos.genre.GenreRequestDTO;
 import nl.novi.vinylshop.dtos.genre.GenreResponseDTO;
@@ -42,7 +41,7 @@ public class GenreController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GenreResponseDTO> getGenreById(@PathVariable Long id) throws EntityNotFoundException {
+    public ResponseEntity<GenreResponseDTO> getGenreById(@PathVariable Long id) {
         GenreResponseDTO genre = genreService.findGenreById(id);
         return new ResponseEntity<>(genre, HttpStatus.OK);
     }
@@ -54,7 +53,7 @@ public class GenreController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GenreResponseDTO> updateGenre(@PathVariable Long id, @RequestBody @Valid GenreRequestDTO genreModel) throws EntityNotFoundException {
+    public ResponseEntity<GenreResponseDTO> updateGenre(@PathVariable Long id, @RequestBody @Valid GenreRequestDTO genreModel) {
         GenreResponseDTO updatedGenre = genreService.updateGenre(id, genreModel);;
         return new ResponseEntity<>(updatedGenre, HttpStatus.OK);
     }

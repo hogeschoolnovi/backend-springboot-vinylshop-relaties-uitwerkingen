@@ -8,7 +8,6 @@ import nl.novi.vinylshop.dtos.artist.ArtistResponseDTO;
 import nl.novi.vinylshop.helpers.UrlHelper;
 import nl.novi.vinylshop.services.AlbumService;
 import nl.novi.vinylshop.services.ArtistService;
-import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +43,7 @@ public class AlbumController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AlbumExtendedResponseDTO> getAlbumById(@PathVariable Long id) throws EntityNotFoundException {
+    public ResponseEntity<AlbumExtendedResponseDTO> getAlbumById(@PathVariable Long id) {
         AlbumExtendedResponseDTO album = albumService.findAlbumById(id);
         return new ResponseEntity<>(album, HttpStatus.OK);
     }
@@ -56,7 +55,7 @@ public class AlbumController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AlbumResponseDTO> updateAlbum(@PathVariable Long id, @RequestBody  AlbumRequestDTO albumRequestDTO) throws EntityNotFoundException {
+    public ResponseEntity<AlbumResponseDTO> updateAlbum(@PathVariable Long id, @RequestBody  AlbumRequestDTO albumRequestDTO) {
         AlbumResponseDTO albumDTO = albumService.updateAlbum(id, albumRequestDTO);
         return new ResponseEntity<>(albumDTO, HttpStatus.OK);
     }
